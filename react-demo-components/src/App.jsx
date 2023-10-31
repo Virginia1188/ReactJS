@@ -1,26 +1,15 @@
-
+import MovieList from './components/MovieList';
+import movies from './assets/movies';
 import './App.css';
 
-const movies = [
-  {
-    title: 'The Matrix',
-    description: 'Description',
-  },
-  {
-    title: 'Harry Potter',
-    description: 'Description',
-  },
-  {
-    title: 'Lord of the Rings',
-    description: 'Description',
-  },
-];
 
 function App() {
 
   return (
     <div>
       <h1>My First Dynamic React App</h1>
+
+      <MovieList movies={movies} headingText='Movie List' />
     </div>
   );
 }
