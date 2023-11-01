@@ -15,7 +15,5 @@ export default function Timer(props) {
             <h2>Timer</h2>
             <p>{time} seconds</p>
         </div>
-
-
     );
 }
