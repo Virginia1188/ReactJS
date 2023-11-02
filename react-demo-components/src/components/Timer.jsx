@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import styles from './Timer.module.css'
 
 export default function Timer(props) {
 
@@ -11,7 +12,7 @@ export default function Timer(props) {
 
 
     return (
-        <div>
+        <div className={styles.timer}>
             <h2>Timer</h2>
             <p>{time} seconds</p>
         </div>
