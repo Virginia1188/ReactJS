@@ -1,6 +1,18 @@
-import UserListItem from "./UserListItem";
+import UserListItem from './UserListItem';
+import * as userService from '../services/userService';
+import { useEffect, useState } from 'react';
+
 
 const UserListTable = () => {
+
+    const [users, setUsers] = useState([]);
+    // console.log(users);
+
+    useEffect(() => {
+        userService.getAll()
+            .then(result => setUsers(result));
+    }, []);
+
     return (
         <div className="table-wrapper">
             {/* <!-- Overlap components  --> */}
@@ -80,7 +92,7 @@ const UserListTable = () => {
                             Image
                         </th>
                         <th>
-                            First name<svg  aria-hidden="true" focusable="false" data-prefix="fas"
+                            First name<svg aria-hidden="true" focusable="false" data-prefix="fas"
                                 data-icon="arrow-down" className="icon svg-inline--fa fa-arrow-down Table_icon__+HHgn" role="img"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
                                 <path fill="currentColor"
@@ -130,7 +142,21 @@ const UserListTable = () => {
                 </thead>
                 <tbody>
                     {/* <!-- Table row component --> */}
-                     <UserListItem />
+
+                    {users.map(user => {
+                        console.log(user);
+                        <UserListItem
+                            key={user._id}
+                            firstName={user.firstName}
+                            lastName={user.lastName}
+                            email={user.email}
+                            createdAt={user.createdAt}
+                            phoneNumber={user.phoneNumber}
+                            imageUrl={user.imageUrl}
+                        />
+                    })}
+
+
                 </tbody>
             </table>
         </div>
