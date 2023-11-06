@@ -1,8 +1,10 @@
 import UserListItem from './UserListItem';
 import CreateUserModal from './CreateUserModal';
+import UserInfoModal from './UserInfoModal';
 
 import * as userService from '../services/userService';
 import { useEffect, useState } from 'react';
+
 
 
 
@@ -10,6 +12,8 @@ const UserListTable = () => {
 
     const [users, setUsers] = useState([]);
     const [showCreate, setShowCreate] = useState(false);
+    const [showInfo, setShowInfo] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
         userService.getAll()
@@ -26,7 +30,7 @@ const UserListTable = () => {
 
     const onUserCreateHandler = async (e) => {
         e.preventDefault();
-        
+
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData)
 
@@ -35,7 +39,11 @@ const UserListTable = () => {
         setShowCreate(false);
     };
 
-
+    const userInfoClickHandler = async (userId) => {
+        setSelectedUser(userId);
+        setShowInfo(true);
+        console.log(selectedUser);
+    };
 
     return (
         <div className="table-wrapper">
@@ -45,8 +53,16 @@ const UserListTable = () => {
                 <CreateUserModal
                     hideModal={hideCreateUserModal}
                     onUserCreate={onUserCreateHandler}
+
                 />
             )}
+
+            {showInfo &&
+                <UserInfoModal
+                    onClose={() => setShowInfo(false)}
+                    userId={selectedUser}
+                />
+            }
 
             <div className="loading-shade">
                 {/*  Loading spinner  */}
@@ -177,12 +193,14 @@ const UserListTable = () => {
 
                         <UserListItem
                             key={u._id}
+                            userId={u._id}
                             firstName={u.firstName}
                             lastName={u.lastName}
                             email={u.email}
                             createdAt={u.createdAt}
                             phoneNumber={u.phoneNumber}
                             imageUrl={u.imageUrl}
+                            onInfoClick={userInfoClickHandler}
                         />
                     ))}
 
