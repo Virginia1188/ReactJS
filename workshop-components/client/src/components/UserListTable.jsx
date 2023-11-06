@@ -1,22 +1,36 @@
 import UserListItem from './UserListItem';
+import CreateUserModal from './CreateUserModal';
 
 import * as userService from '../services/userService';
 import { useEffect, useState } from 'react';
 
 
+
 const UserListTable = () => {
 
     const [users, setUsers] = useState([]);
-    console.log(users);
+    const [showCreate, setShowCreate] = useState(false);
 
     useEffect(() => {
         userService.getAll()
             .then(result => setUsers(result));
     }, []);
 
+    const createUserClickHandler = () => {
+        setShowCreate(true);
+    }
+
+    const hideCreateUserModal = () => {
+        setShowCreate(false);
+    }
+
+
+
     return (
         <div className="table-wrapper">
             {/* <!-- Overlap components  --> */}
+
+            {showCreate && <CreateUserModal hideModal={hideCreateUserModal} />}
 
             <div className="loading-shade">
                 {/*  Loading spinner  */}
@@ -143,10 +157,8 @@ const UserListTable = () => {
                 </thead>
                 <tbody>
                     {/* <!-- Table row component --> */}
-
-
                     {users.map(u => (
-                        
+
                         <UserListItem
                             key={u._id}
                             firstName={u.firstName}
@@ -160,6 +172,10 @@ const UserListTable = () => {
 
                 </tbody>
             </table>
+            {/* <!-- New user button  --> */}
+            <button className="btn-add btn" onClick={createUserClickHandler} >Add new user</button>
+
+            
         </div>
     );
 };
