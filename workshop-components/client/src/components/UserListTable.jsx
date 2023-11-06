@@ -18,11 +18,22 @@ const UserListTable = () => {
 
     const createUserClickHandler = () => {
         setShowCreate(true);
-    }
+    };
 
     const hideCreateUserModal = () => {
         setShowCreate(false);
-    }
+    };
+
+    const onUserCreateHandler = async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData)
+
+        const newUser = await userService.create(data);
+        setUsers(state => [...state, newUser]);
+        setShowCreate(false);
+    };
 
 
 
@@ -30,7 +41,12 @@ const UserListTable = () => {
         <div className="table-wrapper">
             {/* <!-- Overlap components  --> */}
 
-            {showCreate && <CreateUserModal hideModal={hideCreateUserModal} />}
+            {showCreate && (
+                <CreateUserModal
+                    hideModal={hideCreateUserModal}
+                    onUserCreate={onUserCreateHandler}
+                />
+            )}
 
             <div className="loading-shade">
                 {/*  Loading spinner  */}
@@ -175,7 +191,7 @@ const UserListTable = () => {
             {/* <!-- New user button  --> */}
             <button className="btn-add btn" onClick={createUserClickHandler} >Add new user</button>
 
-            
+
         </div>
     );
 };

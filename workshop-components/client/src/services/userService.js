@@ -8,10 +8,42 @@ export const getAll = async () => {
 
         const users = Object.values(result);
 
-        return(users)
+        return (users)
     } catch (error) {
         console.log(error);
     }
+}
 
+export const create = async (data) => {
+    try {
+        const body = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            imageUrl: data.imageUrl,
+            phoneNumber: data.phoneNumber,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            address: {
+              country: data.country,
+              city: data.city,
+              street: data.street,
+              streetNumber: data.streetNumber,
+            }
+          }
 
+        const res = await fetch(baseUrl, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+
+        const result = await res.json();
+        return result;
+
+    } catch (error) {
+        console.log(error);
+    }
 }
