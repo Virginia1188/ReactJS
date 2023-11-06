@@ -1,7 +1,4 @@
-// import * as userService from '../services/userService';
-// import { useEffect, useState } from 'react';
-
-
+import { formatDate } from "../utils/dataUtils";
 
 const UserListItem = ({
     firstName,
@@ -24,7 +21,7 @@ const UserListItem = ({
             <td>{lastName}</td>
             <td>{email}</td>
             <td>{phoneNumber}</td>
-            <td>{createdAt}</td>
+            <td>{formatDate(createdAt)}</td>
 
             <td className="actions">
                 <button className="btn edit-btn" title="Edit">
