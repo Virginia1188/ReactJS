@@ -1,6 +1,7 @@
 import UserListItem from './UserListItem';
 import CreateUserModal from './CreateUserModal';
 import UserInfoModal from './UserInfoModal';
+import UserDeleteModal from './UserDeleteModal';
 
 import * as userService from '../services/userService';
 import { useEffect, useState } from 'react';
@@ -14,6 +15,7 @@ const UserListTable = () => {
     const [showCreate, setShowCreate] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [showDelete, setShowDelete] = useState(null);
 
     useEffect(() => {
         userService.getAll()
@@ -45,6 +47,22 @@ const UserListTable = () => {
         console.log(selectedUser);
     };
 
+    const deleteUserHandler = async () => {
+        const result = await userService.remove(selectedUser);
+
+        setUsers(state => state.filter(user => user._id !== selectedUser));
+
+        setShowDelete(false);
+
+        console.log('delete user');
+    };
+
+    const deleteUserClickHandler = (userId) => {
+        setSelectedUser(userId);
+        setShowDelete(true);
+
+    };
+
     return (
         <div className="table-wrapper">
             {/* <!-- Overlap components  --> */}
@@ -63,6 +81,13 @@ const UserListTable = () => {
                     userId={selectedUser}
                 />
             }
+
+            {showDelete && (
+                <UserDeleteModal
+                onClose={()=> setShowDelete(false)}
+                onDelete={deleteUserHandler}
+                />
+            )}
 
             <div className="loading-shade">
                 {/*  Loading spinner  */}
@@ -201,6 +226,7 @@ const UserListTable = () => {
                             phoneNumber={u.phoneNumber}
                             imageUrl={u.imageUrl}
                             onInfoClick={userInfoClickHandler}
+                            onDeleteClick={deleteUserClickHandler}
                         />
                     ))}
 

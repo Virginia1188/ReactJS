@@ -55,3 +55,12 @@ export const getOne = async (userId) => {
     
     return result;
 }
+
+export const remove = async (userId) => {
+    const res = await fetch(`${baseUrl}/${userId}`, {
+        method: 'DELETE',
+    });
+
+    const result = await res.json();
+    return result;
+};
