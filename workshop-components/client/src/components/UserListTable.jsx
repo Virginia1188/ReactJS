@@ -5,6 +5,7 @@ import UserDeleteModal from './UserDeleteModal';
 
 import * as userService from '../services/userService';
 import { useEffect, useState } from 'react';
+import Spinner from './Spinner';
 
 
 
@@ -16,10 +17,15 @@ const UserListTable = () => {
     const [showInfo, setShowInfo] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [showDelete, setShowDelete] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+
+        setIsLoading(true);
+
         userService.getAll()
-            .then(result => setUsers(result));
+            .then(result => setUsers(result))
+            .finally(() => setIsLoading(false));
     }, []);
 
     const createUserClickHandler = () => {
@@ -54,13 +60,11 @@ const UserListTable = () => {
 
         setShowDelete(false);
 
-        console.log('delete user');
     };
 
     const deleteUserClickHandler = (userId) => {
         setSelectedUser(userId);
         setShowDelete(true);
-
     };
 
     return (
@@ -84,10 +88,12 @@ const UserListTable = () => {
 
             {showDelete && (
                 <UserDeleteModal
-                onClose={()=> setShowDelete(false)}
-                onDelete={deleteUserHandler}
+                    onClose={() => setShowDelete(false)}
+                    onDelete={deleteUserHandler}
                 />
             )}
+
+            {isLoading && <Spinner />}
 
             <div className="loading-shade">
                 {/*  Loading spinner  */}
