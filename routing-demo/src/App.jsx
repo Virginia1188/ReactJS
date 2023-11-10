@@ -3,6 +3,7 @@ import Navigation from './components/Navigation'
 import CharactersList from './components/CharactersList'
 import About from './components/About';
 import Home from './components/Home';
+import CharacterDetails from './components/CharacterDetails';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
         <Route path='/characters' element={<CharactersList/>} />
+        <Route path='/characters/:id' element={<CharacterDetails />} />
       </Routes>
 
       <footer>All rights reserved &copy;</footer>

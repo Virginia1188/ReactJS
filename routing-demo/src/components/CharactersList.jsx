@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CharacterListItem from './CharacterListItem';
 import styles from './CharacterList.module.css'
+
 const baseUrl = 'https://swapi.dev/api';
 
 export default function CharactersList() {
@@ -16,8 +17,8 @@ export default function CharactersList() {
     return (
         <div className={styles.characterList}>
             {
-                characters.map(character =>
-                    <CharacterListItem key={character.name} {...character} />)
+                characters.map((character, index) =>
+                    <CharacterListItem key={character.name} id={index + 1} {...character} />)
             }
         </div>
 

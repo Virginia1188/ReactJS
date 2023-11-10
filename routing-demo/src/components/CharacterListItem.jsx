@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 
 const CharacterListItem = ({
+    id,
     name,
     hair_color,
     birth_year,
@@ -22,7 +23,7 @@ const CharacterListItem = ({
                     </ul>
 
                 </Card.Text>
-                <Button as={Link} to={`/characters/${name}`} variant="primary">Details</Button>
+                <Button as={Link} to={`/characters/${id}`} variant="primary">Details</Button>
             </Card.Body>
         </Card >
     )
