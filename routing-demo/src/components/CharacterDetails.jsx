@@ -13,6 +13,7 @@ export default function CharacterDetails() {
                 if(!res.ok){
                     throw new Error('Not found')
                 }
+               return res.json();
             })
             .then(setCharacter)
             .catch((err) => {
