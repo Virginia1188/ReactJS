@@ -1,11 +1,14 @@
-
+import {create} from '../../services/gameService';
 
 export default function CreateGame() {
 
-    const createSubmitHandler = (e) => {
+    const createSubmitHandler = async (e) => {
         e.preventDefault();
         const gameData = Object.fromEntries(new FormData(e.currentTarget));
         console.log(gameData);
+
+        const result = await create(gameData)
+        console.log(result);
     }
 
     return (
