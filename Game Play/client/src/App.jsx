@@ -12,16 +12,20 @@ import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import GameDetails from "./components/Game-Details/GameDetails";
+import Logout from './components/Logout/Logout';
 
 function App() {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(() => {
+    localStorage.removeItem('accessToken');
+    return {};
+  });
 
   const loginSubmitHandler = async (values) => {
     const result = await authService.login(values.email, values.password);
 
     setAuth(result);
-
+    localStorage.setItem('accessToken', result.accessToken);
     navigate(Path.Home);
 
   }
@@ -30,17 +34,23 @@ function App() {
     const result = await authService.register(values.email, values.password);
 
     setAuth(result);
-
+    localStorage.setItem('accessToken', result.accessToken);
     navigate(Path.Home);
 
+  }
+
+  const logoutHandler = () => {
+    setAuth({});
+    localStorage.removeItem('accessToken');
   }
 
   const values = {
     loginSubmitHandler,
     registerSubmitHandler,
+    logoutHandler,
     username: auth.username || auth.email,
     email: auth.email,
-    isAuthenticated: !!auth.email,
+    isAuthenticated: !!auth.accessToken,
   }
 
   return (
@@ -52,8 +62,9 @@ function App() {
           <Route path={Path.Home} element={<Home />} />
           <Route path={Path.Games} element={<GameList />} />
           <Route path="/games/create" element={<CreateGame />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path={Path.Login} element={<Login />} />
+          <Route path={Path.Logout} element={<Logout />} />
+          <Route path={Path.Register} element={<Register />} />
           <Route path="/games/:gameId" element={<GameDetails />} />
         </Routes>
 
