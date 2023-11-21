@@ -2,7 +2,7 @@
 
 import * as request from '../lib/request';
 
-const baseUrl = 'http://localhost:3030/jsonstore/comments';
+const baseUrl = 'http://localhost:3030/data/comments';
 
 
 export const create = async (gameId, username, text) => {
@@ -18,11 +18,13 @@ export const create = async (gameId, username, text) => {
 
 export const getAll = async (gameId) => {
 
-    // const query = new URLSearchParams({
-    //     where: `gameId="${gameId}"`
-    // });
+    const query = new URLSearchParams({
+        where: `gameId="${gameId}"`
+    });
 
-    const result = await request.get(`${baseUrl}`);
+    const result = await request.get(`${baseUrl}?${query}`);
 
-    return Object.values(result).filter(commnet => commnet.gameId === gameId);
+    // return Object.values(result).filter(commnet => commnet.gameId === gameId);
+
+    return result;
 }
