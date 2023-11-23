@@ -34,8 +34,6 @@ export default function GameDetails({ }) {
 
     }
 
-    console.log(comments);
-
     return (
         <section id="game-details">
             <h1>Game Details</h1>
