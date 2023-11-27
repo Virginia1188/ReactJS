@@ -9,12 +9,12 @@ import useForm from "../../hooks/useForm";
 
 
 export default function GameDetails({ }) {
-    const { email } = useContext(AuthContext);
+    const { email, userId } = useContext(AuthContext);
     const [game, setGame] = useState({});
     // const [comments, setComments] = useState([]);
     const [comments, dispatch] = useReducer(reducer, []);
     const { gameId } = useParams();
-   
+
 
     useEffect(() => {
         gameService.getOne(gameId)
@@ -30,7 +30,7 @@ export default function GameDetails({ }) {
     }, [gameId]);
 
     const addCommenthandler = async (values) => {
-       
+
         const newComment = await commentService.create(
             gameId,
             values.comment,
@@ -42,10 +42,11 @@ export default function GameDetails({ }) {
             payload: newComment,
         })
     }
-    const {values, onChange, onSubmit} = useForm(addCommenthandler, {
+    const { values, onChange, onSubmit } = useForm(addCommenthandler, {
         comment: '',
 
     });
+
 
     return (
         <section id="game-details">
@@ -84,10 +85,13 @@ export default function GameDetails({ }) {
                 </div>
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
-                {/* <div className="buttons">
-                    <a href="#" className="button">Edit</a>
-                    <a href="#" className="button">Delete</a>
-                </div> */}
+                {userId ===game._ownerId && (
+                    <div className="buttons">
+                        <a href="#" className="button">Edit</a>
+                        <a href="#" className="button">Delete</a>
+                    </div>
+                )}
+
             </div>
 
             {/* <!-- Bonus --> */}
