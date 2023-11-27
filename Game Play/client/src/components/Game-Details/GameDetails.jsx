@@ -4,19 +4,9 @@ import { useContext, useEffect, useReducer, useState } from "react";
 import * as gameService from '../../services/gameService';
 import * as commentService from '../../services/commentService';
 import AuthContext from "../../contexts/authContext";
+import reducer from "./commentReducer";
+import useForm from "../../hooks/useForm";
 
-const reducer = (state, action) => {
-    switch (action?.type) {
-        case 'GET_ALL_GAMES':
-            return [...action.payload];
-
-        case 'ADD_COMMENT':
-            return [...state, action.payload];
-
-        default:
-            return state;
-    }
-}
 
 export default function GameDetails({ }) {
     const { email } = useContext(AuthContext);
@@ -24,6 +14,7 @@ export default function GameDetails({ }) {
     // const [comments, setComments] = useState([]);
     const [comments, dispatch] = useReducer(reducer, []);
     const { gameId } = useParams();
+   
 
     useEffect(() => {
         gameService.getOne(gameId)
@@ -38,14 +29,11 @@ export default function GameDetails({ }) {
             });
     }, [gameId]);
 
-    const addCommenthandler = async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(e.target);
-
+    const addCommenthandler = async (values) => {
+       
         const newComment = await commentService.create(
             gameId,
-            formData.get('comment'),
+            values.comment,
         );
         newComment.owner = { email };
         // setComments(state => [...comments, { ...newComment, owner: { email } }]);
@@ -54,6 +42,10 @@ export default function GameDetails({ }) {
             payload: newComment,
         })
     }
+    const {values, onChange, onSubmit} = useForm(addCommenthandler, {
+        comment: '',
+
+    });
 
     return (
         <section id="game-details">
@@ -103,8 +95,8 @@ export default function GameDetails({ }) {
             <article className="create-comment">
                 <label>Add new comment:</label>
 
-                <form className="form" onSubmit={addCommenthandler}>
-                    <textarea name="comment" placeholder="Comment......"></textarea>
+                <form className="form" onSubmit={onSubmit}>
+                    <textarea name="comment" value={values.comment} onChange={onChange} placeholder="Comment......"></textarea>
                     <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
             </article>
