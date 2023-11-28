@@ -48,6 +48,7 @@ export default function GameDetails({ }) {
     const initialValues = useMemo(() => ({
         comment: '',
     }), [])
+
     const { values, onChange, onSubmit } = useForm(addCommenthandler, initialValues);
 
 
